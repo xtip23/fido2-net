@@ -1,0 +1,35 @@
+<!-- Root build props for the whole solution -->
+<Project>
+  <!-- Package Metadata -->
+  <PropertyGroup>
+    <VersionPrefix>4.0.0-beta3</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Description>FIDO2 .NET library (WebAuthn)</Description>
+    <RepositoryUrl>https://github.com/passwordless-lib/fido2-net-lib</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>fido2 webauthn</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/passwordless-lib/fido2-net-lib</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  
+  <!-- Global Variables -->
+  <PropertyGroup>
+    <SupportedTargetFrameworks>net6.0</SupportedTargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+  <!-- Language + Compiler Settings-->
+  <PropertyGroup>
+    <LangVersion>11</LangVersion>
+  </PropertyGroup>
+  
+  <!--MISC-->
+  <PropertyGroup>
+    <!-- Avoid annoying build warnings when packing using the solution file -->
+    <IsPackable>false</IsPackable>
+    <!-- Avoid annoying build warnings when packing using the solution file -->
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+</Project>

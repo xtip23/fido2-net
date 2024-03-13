@@ -1,0 +1,86 @@
+﻿@page "/dashboard/{username}"
+@model WAFido2.Pages.dashboardModel
+@{
+    ViewData["Title"] = "dashboard";
+    Layout = "_Layout.cshtml";
+
+    // Please know that this is not good for production:
+    var DemoStorage = ApiFidoController.DemoStorage;
+    var _mds = ApiFidoController._mds;
+
+    var username = Model.Username;
+
+    //string strServer = "10.26.7.84";
+    //int iPort = 6379;
+    //int iDB = 14;
+    //string vKey = "FIDO:" + username;
+
+    // 1. Get user from DB
+    var user = DemoStorage.GetUser(username);
+
+    // 2. Get registered credentials from database
+    var existingCredentials = DemoStorage.GetCredentialsByUser(username);
+
+
+
+}
+
+<div class="section">
+    <div class="container">
+        <h1 class="title is-1">Dashboard for: @username</h1>
+
+        <p>This page shows all registered keys on this username. Please note that keys are only persisted in memory on the dev server.</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Desc</td>
+                    <td>Counter</td>
+                    <td>AAGuid</td>
+                    <td>UserHandle</td>
+                    <td>UserId</td>
+                    <td>Attestation Type</td>
+                    <td>Public Key</td>
+                </tr>
+            </thead>
+            @foreach (var item in existingCredentials)
+            {
+                var desc = "";
+                var icon = "";
+                var userHandle = System.Text.Encoding.UTF8.GetString(item.UserHandle);
+                var userId = item.UserId != null ? System.Text.Encoding.UTF8.GetString(item.UserId) : "";
+                var publicKey = System.Convert.ToBase64String(item.PublicKey);
+                try
+                {
+
+                    if (_mds != null)
+                    {
+                        var entry = await _mds.GetEntryAsync(item.AaGuid);
+                        desc = entry.MetadataStatement.Description.ToString();
+                        icon = entry.MetadataStatement.Icon.ToString();
+                    }
+
+                }
+                catch { }
+
+                <tr>
+                    <td>@item.RegDate</td>
+                    <td><img src="@icon" /> @desc</td>
+                    <td>@item.SignCount</td>
+                    <td>@item.AaGuid</td>
+                    <td>@userHandle</td>
+                    <td>@userId</td>
+                    <td>@item.AttestationFormat</td>
+                    <td>
+                        <details>
+                            <summary>@publicKey.Substring(0, 10).Substring(0, 10)...</summary>
+                            @publicKey
+                        </details>
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>
